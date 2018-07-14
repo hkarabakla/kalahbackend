@@ -64,12 +64,19 @@ public class GameService {
         Game game = get(gameId);
         Player player;
 
+        // TODO check attacker not null
+
         if(game.getPlayerOne().getId().equals(playerId)) {
             player = game.getPlayerOne();
         } else if(game.getPlayerTwo().getId().equals(playerId)) {
             player = game.getPlayerTwo();
         } else {
             throw new ResourceNotFoundException("Player is not found with id : " + playerId);
+        }
+
+
+        if (!game.getAttacker().getAttackerId().equals(playerId)) {
+            throw new IllegalArgumentException("It is " + game.getAttacker().getAttackerId() + " 's turn !");
         }
 
         CommandRunner commandRunner = new CommandRunner();

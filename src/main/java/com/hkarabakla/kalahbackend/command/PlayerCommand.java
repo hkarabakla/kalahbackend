@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.stream.IntStream;
 
 @NoArgsConstructor
-public class PlayerCommand extends Command {
+class PlayerCommand extends Command {
 
     @Override
     public void execute(Game game, Player player, Integer pitNo) {
@@ -26,7 +26,7 @@ public class PlayerCommand extends Command {
         Pit pit = game.getBoard()
                 .getPits()
                 .stream()
-                .filter(p -> p.getOrderOnTheBoard() == pitNo)
+                .filter(p -> p.getOrderOnTheBoard().equals(pitNo))
                 .findFirst()
                 .get();
 
@@ -53,7 +53,7 @@ public class PlayerCommand extends Command {
                 if (player.getKalahPitOrderNumber().equals(7)) {
                     orderNo = value < 14 ? value % 14 : value % 14 + 1;
                 } else {
-                    orderNo = value < 7 ? value % 14 : value % 14 + 1; // TODO duzelt
+                    orderNo = value > 20 ? value % 14 + 1 : value > 14 ? value % 14 : value; // TODO duzelt
                 }
 
                 Pit tempPit = game.getBoard().getPits().stream().filter(pit1 -> pit1.getOrderOnTheBoard().equals(orderNo)).findFirst().get();

@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
-public class StoneCollectorCommand extends Command {
+class StoneCollectorCommand extends Command {
 
     private static final Map<Integer, Integer> opponentMap;
 
@@ -35,7 +35,13 @@ public class StoneCollectorCommand extends Command {
     @Override
     void execute(Game game, Player player, Integer pitNo) {
 
-        Pit latestPit = game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard() == game.getBoard().getLastPitNo()).findFirst().get();
+        Pit latestPit = game.getBoard()
+                .getPits()
+                .stream()
+                .filter(pit -> pit.getOrderOnTheBoard().equals(game.getBoard().getLastPitNo()))
+                .findFirst()
+                .get();
+
         Pit playersKalah = game
                 .getBoard()
                 .getPits()
@@ -44,7 +50,8 @@ public class StoneCollectorCommand extends Command {
                 .findFirst()
                 .get();
 
-        // Rule 5
+        // Rule 5 // TODO write rule explanation
+
         if (!player.getPitIndexes().contains(game.getBoard().getLastPitNo())) {
             if (latestPit.getStones() % 2 == 0) {
                 int stones = latestPit.getStones();
@@ -55,7 +62,7 @@ public class StoneCollectorCommand extends Command {
 
         // Rule 6
         if (player.getPitIndexes().contains(game.getBoard().getLastPitNo())) {
-            if (latestPit.getStones().equals(1)) {
+            if (latestPit.getStones().equals(1) && !player.getKalahPitOrderNumber().equals(latestPit.getOrderOnTheBoard())) {
                 Optional<Pit> opponentPit = game
                         .getBoard()
                         .getPits()
@@ -71,14 +78,16 @@ public class StoneCollectorCommand extends Command {
         }
 
         // Rule 7
-        Integer collect = game.getBoard()
+        Integer playersPitsSum = game.getBoard()
                 .getPits()
                 .stream()
                 .filter(pit -> player.getPitIndexes().contains(pit.getOrderOnTheBoard())
                         && !pit.getOrderOnTheBoard().equals(player.getKalahPitOrderNumber()))
                 .collect(Collectors.toList())
-                .stream().mapToInt(Pit::getStones).sum();
-        if(collect.equals(0)) {
+                .stream()
+                .mapToInt(Pit::getStones)
+                .sum();
+        if(playersPitsSum.equals(0)) {
             game.getBoard()
                     .getPits()
                     .stream()
