@@ -15,8 +15,6 @@ class PlayerCommand extends Command {
     @Override
     public void execute(Game game, Player player, Integer pitNo) {
 
-        // TODO move this to controller
-
         if (pitNo < 0 || pitNo > 14) {
             throw new IllegalArgumentException("PitNo is not valid");
         }
@@ -45,7 +43,7 @@ class PlayerCommand extends Command {
                 if (player.getKalahPitOrderNumber().equals(7)) {
                     orderNo = value < 14 ? value % 14 : value % 14 + 1;
                 } else {
-                    orderNo = value > 20 ? value % 14 + 1 : value > 14 ? value % 14 : value; // TODO duzelt
+                    orderNo = value > 20 ? value % 14 + 1 : value > 14 ? value % 14 : value;
                 }
 
                 Pit tempPit = getPitByOrderNo(game, orderNo);

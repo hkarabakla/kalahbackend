@@ -41,7 +41,6 @@ class StoneCollectorCommand extends Command {
 
         Pit playersKalah = getPitByOrderNo(game, player.getKalahPitOrderNumber());
 
-        // Rule 5 // TODO write rule explanation
         if (!player.getPitIndexes().contains(game.getBoard().getLastPitNo())) {
             if (latestPit.getStones() % 2 == 0) {
                 int stones = latestPit.getStones();
@@ -50,7 +49,6 @@ class StoneCollectorCommand extends Command {
             }
         }
 
-        // Rule 6
         if (player.getPitIndexes().contains(game.getBoard().getLastPitNo())) {
             if (latestPit.getStones().equals(1) && !player.getKalahPitOrderNumber().equals(latestPit.getOrderOnTheBoard())) {
                 Optional<Pit> opponentPit = game
@@ -67,7 +65,6 @@ class StoneCollectorCommand extends Command {
             }
         }
 
-        // Rule 7
         Integer playersPitsSum = game.getBoard()
                 .getPits()
                 .stream()

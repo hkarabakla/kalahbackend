@@ -67,8 +67,6 @@ public class GameService {
         Game game = getGameById(gameId);
         Player player;
 
-        // TODO check status not null
-
         if(game.getPlayerOne().getId().equals(playerId)) {
             player = game.getPlayerOne();
         } else if(game.getPlayerTwo().getId().equals(playerId)) {
@@ -76,7 +74,6 @@ public class GameService {
         } else {
             throw new ResourceNotFoundException("Player is not found with id : " + playerId);
         }
-
 
         if (!game.getStatus().getAttackerId().equals(playerId)) {
             throw new IllegalArgumentException("It is " + game.getStatus().getAttackerId() + " 's turn !");

@@ -52,7 +52,6 @@ public class GameControllerTest {
         assertEquals(HttpStatus.CREATED, gameResource.getStatusCode());
         assertNotNull(gameResource.getBody().getIdentifier());
         verify(gameServiceMock).create();
-        // TODO add more asserts
     }
 
     @Test
@@ -70,7 +69,6 @@ public class GameControllerTest {
         assertEquals(HttpStatus.OK, gameResource.getStatusCode());
         assertNotNull(gameResource.getBody().getIdentifier());
         verify(gameServiceMock).getGameById(MockConstants.ID_1);
-        // TODO add more asserts
     }
 
     @Test
@@ -88,7 +86,6 @@ public class GameControllerTest {
         assertEquals(HttpStatus.OK, gameResource.getStatusCode());
         assertNotNull(gameResource.getBody().getIdentifier());
         verify(gameServiceMock).joinTheGame(MockConstants.ID_1);
-        // TODO add more asserts
     }
 
     @Test
@@ -106,6 +103,5 @@ public class GameControllerTest {
         assertEquals(HttpStatus.OK, gameResource.getStatusCode());
         assertNotNull(gameResource.getBody().getIdentifier());
         verify(gameServiceMock).move(MockConstants.ID_1, MockConstants.ID_2, MockConstants.PIT_NO_8);
-        // TODO add more asserts
     }
 }
