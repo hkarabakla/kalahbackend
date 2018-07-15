@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.stream.IntStream;
 
+import static com.hkarabakla.kalahbackend.util.GameUtil.getPitByOrderNo;
+
 @NoArgsConstructor
 class PlayerCommand extends Command {
 
@@ -23,12 +25,7 @@ class PlayerCommand extends Command {
             throw new IllegalArgumentException("PitNo doesn't belong to the selected player");
         }
 
-        Pit pit = game.getBoard()
-                .getPits()
-                .stream()
-                .filter(p -> p.getOrderOnTheBoard().equals(pitNo))
-                .findFirst()
-                .get();
+        Pit pit = getPitByOrderNo(game, pitNo);
 
         if (pit.getKalah()) {
             throw new IllegalArgumentException("Pit is kalah, select another pit to play");
@@ -41,12 +38,7 @@ class PlayerCommand extends Command {
 
         if (stonesInTheSelectedPit == 1) {
             game.getBoard().setLastPitNo(pitNo + 1);
-            game.getBoard().getPits()
-                    .stream()
-                    .filter(p -> p.getOrderOnTheBoard() == pitNo + 1)
-                    .findFirst()
-                    .get()
-                    .addStone(stonesInTheSelectedPit);
+            getPitByOrderNo(game, pitNo + 1).addStone(stonesInTheSelectedPit);
         } else {
             IntStream.range(pitNo, pitNo + stonesInTheSelectedPit).forEachOrdered(value -> {
                 int orderNo;
@@ -56,7 +48,7 @@ class PlayerCommand extends Command {
                     orderNo = value > 20 ? value % 14 + 1 : value > 14 ? value % 14 : value; // TODO duzelt
                 }
 
-                Pit tempPit = game.getBoard().getPits().stream().filter(pit1 -> pit1.getOrderOnTheBoard().equals(orderNo)).findFirst().get();
+                Pit tempPit = getPitByOrderNo(game, orderNo);
 
                 if (!(tempPit.getKalah() && !player.getPitIndexes().contains(tempPit.getOrderOnTheBoard()))) {
                     // tempPit is not opponent's kalah

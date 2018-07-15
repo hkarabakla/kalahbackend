@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AttackerResource {
+public class Score {
 
-    private Long attackerId;
-    private String reason;
+    private Integer firstPlayerScore;
+    private Integer secondPlayerScore;
+    private Long winner;
 }

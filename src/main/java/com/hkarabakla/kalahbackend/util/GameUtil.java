@@ -1,6 +1,7 @@
 package com.hkarabakla.kalahbackend.util;
 
 import com.hkarabakla.kalahbackend.constants.GameConstants;
+import com.hkarabakla.kalahbackend.model.Game;
 import com.hkarabakla.kalahbackend.model.Pit;
 
 import java.util.ArrayList;
@@ -23,5 +24,14 @@ public class GameUtil {
         });
 
         return pits;
+    }
+
+    public static Pit getPitByOrderNo(Game game, Integer pitNo) {
+        return game.getBoard()
+                .getPits()
+                .stream()
+                .filter(p -> p.getOrderOnTheBoard().equals(pitNo))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid pit no"));
     }
 }

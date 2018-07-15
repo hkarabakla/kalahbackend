@@ -3,7 +3,6 @@ package com.hkarabakla.kalahbackend.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -20,7 +19,7 @@ public class Player {
 
     @ElementCollection
     @CollectionTable(name = "player_pit_indexes", joinColumns = @JoinColumn(name = "player_id"))
-    private List<Integer> pitIndexes = new ArrayList<>();
+    private List<Integer> pitIndexes;
 
     private Integer kalahPitOrderNumber;
 }

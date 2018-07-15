@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Builder
@@ -15,5 +14,5 @@ import java.util.Map;
 public class PlayerResource {
 
     private Long id;
-    private Map<Integer, Integer> pits = new HashMap<>();
+    private Map<Integer, Integer> pits;
 }

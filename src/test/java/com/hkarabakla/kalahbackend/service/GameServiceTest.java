@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
+import static com.hkarabakla.kalahbackend.util.GameUtil.getPitByOrderNo;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -106,7 +107,7 @@ public class GameServiceTest {
         assertNotNull(game.getPlayerOne());
         assertNotNull(game.getPlayerTwo());
         assertNotNull(game.getBoard());
-        assertNotNull(game.getAttacker());
+        assertNotNull(game.getStatus());
         assertArrayEquals(game.getBoard().getPits().stream().map(Pit::getOrderOnTheBoard).toArray(),
                 ObjectArrays.concat(game.getPlayerOne().getPitIndexes().toArray(new Integer[7]),
                         game.getPlayerTwo().getPitIndexes().toArray(new Integer[7]),
@@ -142,57 +143,14 @@ public class GameServiceTest {
         assertNotNull(game.getPlayerOne());
         assertNotNull(game.getPlayerTwo());
         assertNotNull(game.getBoard());
-        assertNotNull(game.getAttacker());
-        assertEquals(Optional.of(1).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_8))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_9))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_10))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_11))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_12))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_13))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(1).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_14))
-                .findFirst()
-                .get()
-                .getStones());
-
+        assertNotNull(game.getStatus());
+        assertEquals(1, getPitByOrderNo(game, MockConstants.PIT_NO_8).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_9).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_10).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_11).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_12).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_13).getStones().intValue());
+        assertEquals(1, getPitByOrderNo(game, MockConstants.PIT_NO_14).getStones().intValue());
     }
 
     @Test(expected = ResourceNotFoundException.class)

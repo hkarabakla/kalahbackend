@@ -11,8 +11,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Optional;
-
+import static com.hkarabakla.kalahbackend.util.GameUtil.getPitByOrderNo;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -35,7 +34,7 @@ public class StoneCollectorCommandTest {
 
         // given
         Game game = GameMocks.createFullGameMock();
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_1)).findFirst().get().setStones(2);
+        getPitByOrderNo(game, MockConstants.PIT_NO_1).setStones(2);
         game.getBoard().setLastPitNo(MockConstants.PIT_NO_1);
         Player player = game.getPlayerTwo();
         Integer pitNo = MockConstants.PIT_NO_9;
@@ -44,8 +43,8 @@ public class StoneCollectorCommandTest {
         underTest.execute(game, player, pitNo);
 
         // then
-        assertEquals(Optional.of(0).get(), game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_1)).findFirst().get().getStones());
-        assertEquals(Optional.of(2).get(), game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_14)).findFirst().get().getStones());
+        assertEquals(0, getPitByOrderNo(game, MockConstants.PIT_NO_1).getStones().intValue());
+        assertEquals(2, getPitByOrderNo(game, MockConstants.PIT_NO_14).getStones().intValue());
     }
 
 
@@ -55,7 +54,7 @@ public class StoneCollectorCommandTest {
         // given
         Game game = GameMocks.createFullGameMock();
         game.getBoard().setLastPitNo(MockConstants.PIT_NO_9);
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_9)).findFirst().get().setStones(1);
+        getPitByOrderNo(game, MockConstants.PIT_NO_9).setStones(1);
         Player player = game.getPlayerTwo();
         Integer pitNo = MockConstants.PIT_NO_9;
 
@@ -63,8 +62,8 @@ public class StoneCollectorCommandTest {
         underTest.execute(game, player, pitNo);
 
         // then
-        assertEquals(Optional.of(0).get(), game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_5)).findFirst().get().getStones());
-        assertEquals(Optional.of(6).get(), game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_14)).findFirst().get().getStones());
+        assertEquals(0, getPitByOrderNo(game, MockConstants.PIT_NO_5).getStones().intValue());
+        assertEquals(6, getPitByOrderNo(game, MockConstants.PIT_NO_14).getStones().intValue());
     }
 
     @Test
@@ -73,12 +72,12 @@ public class StoneCollectorCommandTest {
         // given
         Game game = GameMocks.createFullGameMock();
         game.getBoard().setLastPitNo(MockConstants.PIT_NO_1);
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_8)).findFirst().get().setStones(0);
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_9)).findFirst().get().setStones(0);
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_10)).findFirst().get().setStones(0);
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_11)).findFirst().get().setStones(0);
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_12)).findFirst().get().setStones(0);
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_13)).findFirst().get().setStones(0);
+        getPitByOrderNo(game, MockConstants.PIT_NO_8).setStones(0);
+        getPitByOrderNo(game, MockConstants.PIT_NO_9).setStones(0);
+        getPitByOrderNo(game, MockConstants.PIT_NO_10).setStones(0);
+        getPitByOrderNo(game, MockConstants.PIT_NO_11).setStones(0);
+        getPitByOrderNo(game, MockConstants.PIT_NO_12).setStones(0);
+        getPitByOrderNo(game, MockConstants.PIT_NO_13).setStones(0);
         Player player = game.getPlayerTwo();
         Integer pitNo = MockConstants.PIT_NO_9;
 
@@ -86,6 +85,6 @@ public class StoneCollectorCommandTest {
         underTest.execute(game, player, pitNo);
 
         // then
-        assertEquals(Optional.of(36).get(), game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_14)).findFirst().get().getStones());
+        assertEquals(36, getPitByOrderNo(game, MockConstants.PIT_NO_14).getStones().intValue());
     }
 }

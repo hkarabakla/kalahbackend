@@ -11,8 +11,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Optional;
-
+import static com.hkarabakla.kalahbackend.util.GameUtil.getPitByOrderNo;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -41,62 +40,20 @@ public class PlayerCommandTest {
         underTest.execute(game, player, pitNo);
 
         // then
-        assertEquals(Optional.of(1).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_8))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_9))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_10))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_11))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_12))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_13))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(0).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_14))
-                .findFirst()
-                .get()
-                .getStones());
+        assertEquals(1, getPitByOrderNo(game, MockConstants.PIT_NO_8).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_9).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_10).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_11).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_12).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_13).getStones().intValue());
+        assertEquals(0, getPitByOrderNo(game, MockConstants.PIT_NO_14).getStones().intValue());
     }
 
     @Test
     public void executeOneStoneInSelectedPitCase() {
         // given
         Game game = GameMocks.createFullGameMock();
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_8)).findFirst().get().setStones(1);
+        getPitByOrderNo(game, MockConstants.PIT_NO_8).setStones(1);
         Player player = game.getPlayerTwo();
         Integer pitNo = MockConstants.PIT_NO_8;
 
@@ -104,20 +61,8 @@ public class PlayerCommandTest {
         underTest.execute(game, player, pitNo);
 
         // then
-        assertEquals(Optional.of(0).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_8))
-                .findFirst()
-                .get()
-                .getStones());
-        assertEquals(Optional.of(7).get(), game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_9))
-                .findFirst()
-                .get()
-                .getStones());
+        assertEquals(0, getPitByOrderNo(game, MockConstants.PIT_NO_8).getStones().intValue());
+        assertEquals(7, getPitByOrderNo(game, MockConstants.PIT_NO_9).getStones().intValue());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -137,7 +82,7 @@ public class PlayerCommandTest {
     public void executeNoStonesInSelectedPitCase() {
         // given
         Game game = GameMocks.createFullGameMock();
-        game.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(MockConstants.PIT_NO_8)).findFirst().get().setStones(0);
+        getPitByOrderNo(game, MockConstants.PIT_NO_8).setStones(0);
         Player player = game.getPlayerTwo();
         Integer pitNo = MockConstants.PIT_NO_8;
 

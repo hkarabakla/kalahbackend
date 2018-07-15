@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StatusResource {
 
-    private PlayerResource player1;
-    private PlayerResource player2;
+    private String status;
+    private Long attackerId;
+    private Score score;
 }

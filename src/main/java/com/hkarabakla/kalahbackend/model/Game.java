@@ -1,6 +1,7 @@
 package com.hkarabakla.kalahbackend.model;
 
 import com.hkarabakla.kalahbackend.constants.GameConstants;
+import com.hkarabakla.kalahbackend.constants.GameStatus;
 import com.hkarabakla.kalahbackend.exception.ForbiddenOperationException;
 import com.hkarabakla.kalahbackend.util.GameUtil;
 import lombok.*;
@@ -31,7 +32,7 @@ public class Game {
 
     @Setter
     @Embedded
-    private Attacker attacker;
+    private Status status;
 
 
     public void addPlayer() {
@@ -49,6 +50,7 @@ public class Game {
             this.board = Board.builder()
                     .pits(pitsForPlayerOne)
                     .build();
+            this.status.setStatus(GameStatus.WAITING_FOR_SECOND_PLAYER);
         } else {
             List<Pit> pitsForPlayerTwo = GameUtil.getPitsForPlayer(GameConstants.PLAYER_TWO);
             this.playerTwo = Player.builder()

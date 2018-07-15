@@ -7,6 +7,7 @@ import com.hkarabakla.kalahbackend.model.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -14,13 +15,17 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class NextAttackerIdentifierCommandTest {
+public class NextStatusIdentifierCommandTest {
+
+    @Mock
+    private Command commandMock;
 
     private NextAttackerIdentifierCommand underTest;
 
     @Before
     public void setUp() {
         this.underTest = new NextAttackerIdentifierCommand();
+        this.underTest.setNext(commandMock);
     }
 
     @Test
@@ -35,7 +40,7 @@ public class NextAttackerIdentifierCommandTest {
         underTest.execute(game, player, pitNo);
 
         // then
-        assertEquals(player.getId(), game.getAttacker().getAttackerId());
+        assertEquals(player.getId(), game.getStatus().getAttackerId());
     }
 
     @Test
@@ -49,7 +54,7 @@ public class NextAttackerIdentifierCommandTest {
         underTest.execute(game, player, pitNo);
 
         // then
-        assertEquals(game.getPlayerOne().getId(), game.getAttacker().getAttackerId());
+        assertEquals(game.getPlayerOne().getId(), game.getStatus().getAttackerId());
     }
 
     @Test
@@ -63,7 +68,7 @@ public class NextAttackerIdentifierCommandTest {
         underTest.execute(game, player, pitNo);
 
         // then
-        assertEquals(game.getPlayerTwo().getId(), game.getAttacker().getAttackerId());
+        assertEquals(game.getPlayerTwo().getId(), game.getStatus().getAttackerId());
     }
 
 }

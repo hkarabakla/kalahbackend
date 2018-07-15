@@ -1,8 +1,9 @@
 package com.hkarabakla.kalahbackend.service;
 
 import com.hkarabakla.kalahbackend.command.CommandRunner;
+import com.hkarabakla.kalahbackend.constants.GameStatus;
 import com.hkarabakla.kalahbackend.exception.ResourceNotFoundException;
-import com.hkarabakla.kalahbackend.model.Attacker;
+import com.hkarabakla.kalahbackend.model.Status;
 import com.hkarabakla.kalahbackend.model.Game;
 import com.hkarabakla.kalahbackend.model.Player;
 import com.hkarabakla.kalahbackend.repository.GameRepository;
@@ -21,7 +22,11 @@ public class GameService {
 
     public Game create() {
 
-        Game game = Game.builder().build();
+        Game game = Game.builder()
+                .status(Status.builder()
+                        .status(GameStatus.WAITING_FOR_FIRST_PLAYER)
+                        .build())
+                .build();
         return gameRepository.save(game);
     }
 
@@ -42,13 +47,13 @@ public class GameService {
         Random r = new Random();
         int randomPlayerNumber = r.nextInt(2) + 1;
         if(randomPlayerNumber == 1) {
-            game.setAttacker(Attacker.builder()
+            game.setStatus(Status.builder()
                     .attackerId(game.getPlayerOne().getId())
-                    .reason(game.getPlayerOne().getId() + " starts !").build());
+                    .status(GameStatus.WAITING_FOR_FIRST_PLAYERS_ATTACK).build());
         } else {
-            game.setAttacker(Attacker.builder()
+            game.setStatus(Status.builder()
                     .attackerId(game.getPlayerTwo().getId())
-                    .reason(game.getPlayerTwo().getId() + " starts !").build());
+                    .status(GameStatus.WAITING_FOR_SECOND_PLAYERS_ATTACK).build());
         }
     }
 
@@ -62,7 +67,7 @@ public class GameService {
         Game game = getGameById(gameId);
         Player player;
 
-        // TODO check attacker not null
+        // TODO check status not null
 
         if(game.getPlayerOne().getId().equals(playerId)) {
             player = game.getPlayerOne();
@@ -73,8 +78,8 @@ public class GameService {
         }
 
 
-        if (!game.getAttacker().getAttackerId().equals(playerId)) {
-            throw new IllegalArgumentException("It is " + game.getAttacker().getAttackerId() + " 's turn !");
+        if (!game.getStatus().getAttackerId().equals(playerId)) {
+            throw new IllegalArgumentException("It is " + game.getStatus().getAttackerId() + " 's turn !");
         }
 
         CommandRunner commandRunner = new CommandRunner();

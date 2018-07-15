@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.hkarabakla.kalahbackend.util.GameUtil.getPitByOrderNo;
+
 @NoArgsConstructor
 class StoneCollectorCommand extends Command {
 
@@ -35,20 +37,9 @@ class StoneCollectorCommand extends Command {
     @Override
     void execute(Game game, Player player, Integer pitNo) {
 
-        Pit latestPit = game.getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(game.getBoard().getLastPitNo()))
-                .findFirst()
-                .get();
+        Pit latestPit = getPitByOrderNo(game, game.getBoard().getLastPitNo());
 
-        Pit playersKalah = game
-                .getBoard()
-                .getPits()
-                .stream()
-                .filter(pit -> pit.getOrderOnTheBoard().equals(player.getKalahPitOrderNumber()))
-                .findFirst()
-                .get();
+        Pit playersKalah = getPitByOrderNo(game, player.getKalahPitOrderNumber());
 
         // Rule 5 // TODO write rule explanation
         if (!player.getPitIndexes().contains(game.getBoard().getLastPitNo())) {
@@ -68,7 +59,7 @@ class StoneCollectorCommand extends Command {
                         .stream()
                         .filter(pit -> pit.getOrderOnTheBoard().equals(opponentMap.get(game.getBoard().getLastPitNo())))
                         .findFirst();
-                if(opponentPit.isPresent()) {
+                if (opponentPit.isPresent()) {
                     int stones = opponentPit.get().getStones();
                     opponentPit.get().removeAllStones();
                     playersKalah.addStone(stones);
@@ -86,13 +77,13 @@ class StoneCollectorCommand extends Command {
                 .stream()
                 .mapToInt(Pit::getStones)
                 .sum();
-        if(playersPitsSum.equals(0)) {
+        if (playersPitsSum.equals(0)) {
             game.getBoard()
                     .getPits()
                     .stream()
                     .filter(pit -> !player.getPitIndexes().contains(pit.getOrderOnTheBoard()))
                     .forEach(pit -> {
-                        if(!pit.getKalah()) {
+                        if (!pit.getKalah()) {
                             playersKalah.addStone(pit.getStones());
                             pit.removeAllStones();
                         }
@@ -102,4 +93,6 @@ class StoneCollectorCommand extends Command {
 
         getNext().execute(game, player, pitNo);
     }
+
+
 }

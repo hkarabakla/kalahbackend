@@ -16,6 +16,7 @@ public class GameResource extends ResourceSupport {
     @JsonProperty(value = "id")
     private Long identifier;
 
+    private PlayerResource first;
+    private PlayerResource second;
     private StatusResource status;
-    private AttackerResource attacker;
 }

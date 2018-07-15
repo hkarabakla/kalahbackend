@@ -11,7 +11,7 @@ public class MockConstants {
     public static final Integer PIT_NO_13 = 13;
     public static final Integer PIT_NO_14 = 14;
 
-    public static final String REASON = "Reason";
+    public static final GameStatus STATUS = GameStatus.WAITING_FOR_FIRST_PLAYER;
     public static final Long ID_3 = 3L;
     public static final Integer PIT_NO_15 = 15;
     public static final Integer PIT_NO_1 = 1;

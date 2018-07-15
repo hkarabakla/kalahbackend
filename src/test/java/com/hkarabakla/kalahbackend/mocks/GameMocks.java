@@ -1,5 +1,6 @@
 package com.hkarabakla.kalahbackend.mocks;
 
+import com.hkarabakla.kalahbackend.constants.GameStatus;
 import com.hkarabakla.kalahbackend.constants.MockConstants;
 import com.hkarabakla.kalahbackend.controller.resource.GameResource;
 import com.hkarabakla.kalahbackend.model.*;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hkarabakla.kalahbackend.util.GameUtil.getPitByOrderNo;
 import static com.hkarabakla.kalahbackend.util.GameUtil.getPitsForPlayer;
 
 public class GameMocks {
@@ -15,6 +17,9 @@ public class GameMocks {
     public static Game createInitialGameMock() {
         return Game.builder()
                 .id(MockConstants.ID_1)
+                .status(Status.builder()
+                        .status(GameStatus.WAITING_FOR_FIRST_PLAYER)
+                        .build())
                 .build();
     }
 
@@ -59,23 +64,23 @@ public class GameMocks {
                 .board(Board.builder()
                         .pits(allPits)
                         .build())
-                .attacker(Attacker.builder()
+                .status(Status.builder()
                         .attackerId(MockConstants.ID_2)
-                        .reason(MockConstants.REASON)
+                        .status(MockConstants.STATUS)
                         .build())
                 .build();
     }
 
     public static Game getGameMockAfterFirstMoveForPlayerTwo() {
         Game fullGameMock = createFullGameMock();
-        fullGameMock.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(8)).findFirst().get().setStones(1);
-        fullGameMock.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(9)).findFirst().get().setStones(7);
-        fullGameMock.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(10)).findFirst().get().setStones(7);
-        fullGameMock.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(11)).findFirst().get().setStones(7);
-        fullGameMock.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(12)).findFirst().get().setStones(7);
-        fullGameMock.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(13)).findFirst().get().setStones(7);
-        fullGameMock.getBoard().getPits().stream().filter(pit -> pit.getOrderOnTheBoard().equals(14)).findFirst().get().setStones(1);
-        fullGameMock.setAttacker(Attacker.builder().attackerId(MockConstants.ID_1).reason(MockConstants.REASON).build());
+        getPitByOrderNo(fullGameMock, 8).setStones(1);
+        getPitByOrderNo(fullGameMock, 9).setStones(7);
+        getPitByOrderNo(fullGameMock, 10).setStones(7);
+        getPitByOrderNo(fullGameMock, 11).setStones(7);
+        getPitByOrderNo(fullGameMock, 12).setStones(7);
+        getPitByOrderNo(fullGameMock, 13).setStones(7);
+        getPitByOrderNo(fullGameMock, 14).setStones(1);
+        fullGameMock.setStatus(Status.builder().attackerId(MockConstants.ID_1).status(MockConstants.STATUS).build());
         fullGameMock.getBoard().setLastPitNo(14);
         return fullGameMock;
     }
@@ -85,6 +90,4 @@ public class GameMocks {
                 .identifier(game.getId())
                 .build();
     }
-
-
 }
