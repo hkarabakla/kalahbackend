@@ -7,11 +7,7 @@ import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
 
 @RestController
 @RequestMapping(value = "/api/v1/games", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -27,7 +23,6 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<GameResource> create() {
-
         Game game = gameService.create();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -36,7 +31,7 @@ public class GameController {
 
     @GetMapping("/{gameId}")
     public ResponseEntity<GameResource> get(@PathVariable Long gameId) {
-        Game game = gameService.get(gameId);
+        Game game = gameService.getGameById(gameId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(conversionService.convert(game, GameResource.class));

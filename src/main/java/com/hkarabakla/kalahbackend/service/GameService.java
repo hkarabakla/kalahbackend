@@ -14,11 +14,9 @@ import java.util.Random;
 public class GameService {
 
     private final GameRepository gameRepository;
-    private final PitService pitService;
 
-    public GameService(GameRepository gameRepository, PitService pitService) {
+    public GameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.pitService = pitService;
     }
 
     public Game create() {
@@ -29,7 +27,7 @@ public class GameService {
 
     public Game joinTheGame(Long gameId) {
 
-        Game game = get(gameId);
+        Game game = getGameById(gameId);
         game.addPlayer();
 
         if(game.getPlayerOne() != null && game.getPlayerTwo() != null) {
@@ -42,26 +40,26 @@ public class GameService {
 
     private void defineFirstAttacker(Game game) {
         Random r = new Random();
-        int randomPlayer = r.nextInt(2) + 1;
-        if(randomPlayer == 1) {
+        int randomPlayerNumber = r.nextInt(2) + 1;
+        if(randomPlayerNumber == 1) {
             game.setAttacker(Attacker.builder()
                     .attackerId(game.getPlayerOne().getId())
-                    .reason("First player").build());
+                    .reason(game.getPlayerOne().getId() + " starts !").build());
         } else {
             game.setAttacker(Attacker.builder()
                     .attackerId(game.getPlayerTwo().getId())
-                    .reason("Second player").build());
+                    .reason(game.getPlayerTwo().getId() + " starts !").build());
         }
     }
 
-    public Game get(Long gameId) {
+    public Game getGameById(Long gameId) {
         return gameRepository.findById(gameId)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found with id : " + gameId));
     }
 
-    public Game move(Long gameId, Long playerId, Integer pitId) {
+    public Game move(Long gameId, Long playerId, Integer pitNo) {
 
-        Game game = get(gameId);
+        Game game = getGameById(gameId);
         Player player;
 
         // TODO check attacker not null
@@ -80,7 +78,7 @@ public class GameService {
         }
 
         CommandRunner commandRunner = new CommandRunner();
-        commandRunner.run(game, player, pitId);
+        commandRunner.run(game, player, pitNo);
 
         return gameRepository.save(game);
     }

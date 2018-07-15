@@ -51,7 +51,6 @@ class StoneCollectorCommand extends Command {
                 .get();
 
         // Rule 5 // TODO write rule explanation
-
         if (!player.getPitIndexes().contains(game.getBoard().getLastPitNo())) {
             if (latestPit.getStones() % 2 == 0) {
                 int stones = latestPit.getStones();
