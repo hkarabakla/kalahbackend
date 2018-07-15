@@ -37,7 +37,7 @@ public class GameController {
                 .body(conversionService.convert(game, GameResource.class));
     }
 
-    @PutMapping("/{gameId}")
+    @PutMapping("/{gameId}/join")
     public ResponseEntity<GameResource> joinTheGame(@PathVariable Long gameId) {
         Game game = gameService.joinTheGame(gameId);
         return ResponseEntity
